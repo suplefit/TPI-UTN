@@ -125,14 +125,16 @@ public class BasedeDatos {
     				System.out.println(rsP.getString(6));
     				
     				
-    				if (rsP.getString(4).equals("x")) {
-    					equipoX.setNombre(rsR.getString(3));
-    					resultado = ResultadoEnum.ganador;
-    				} else if(rsP.getString(5).equals("x")) {
-    					resultado = ResultadoEnum.empate;
-    				} else if(rsP.getString(6).equals("x")) {
-    					equipoX.setNombre(rsR.getString(3));
-    					resultado = ResultadoEnum.perdedor;
+    				if (rsP.getString(4) != null && "x".equalsIgnoreCase(rsP.getString(4)) ) {
+    				    equipoX.setNombre(rsP.getString(3));
+    				    resultado = ResultadoEnum.ganador;
+    				}
+    				if(rsP.getString(5) != null && "x".equalsIgnoreCase(rsP.getString(5)) ) {
+    				    resultado = ResultadoEnum.empate;
+    				}
+    				if(rsP.getString(6) != null && "x".equalsIgnoreCase(rsP.getString(6)) ) {
+    				    equipoX.setNombre(rsP.getString(3));
+    				    resultado = ResultadoEnum.perdedor;
     				}
     				
     				
@@ -147,7 +149,7 @@ public class BasedeDatos {
 					
 				}
 				
-				JOptionPane.showMessageDialog(null, listaDePronos.get(0).getNombre());
+//				JOptionPane.showMessageDialog(null, listaDePronos.get(0).getNombre());
 				
 			} catch (SQLException ex)  {
     			JOptionPane.showMessageDialog(null,"no se cargaron correctamente los datos correctamente "
@@ -157,29 +159,29 @@ public class BasedeDatos {
 			//listaDePronos
 			//listaDePartido
 			
-//			int puntos = 0;
-//			ResultadoEnum resultadoDePartido = null;
-//			
-//			for (int i = 0; i < listaDePartido.size(); i++) {
-//				
-//				// verificacion entre ambos arrays 
-//				
-//				if (listaDePartido.get(i).getEquipo1().getNombre().equals(listaDePronos.get(i).getPartido().getEquipo1().getNombre()) && 
-//					listaDePartido.get(i).getEquipo2().getNombre().equals(listaDePronos.get(i).getPartido().getEquipo2().getNombre())) {
-//					
-//					// obtencion de resultado del partido
-//					
-//					resultadoDePartido = listaDePartido.get(i).resultado(listaDePartido.get(i).getEquipo1());
-//
-//					// obtencion y sumatoria de puntos
-//					
-//					puntos += listaDePronos.get(i).puntos(resultadoDePartido);
-//					
-//				}
-//					
-//			}
-//			
-//			JOptionPane.showMessageDialog(null,"Se han obtenido "+ puntos +" puntos.");
+			int puntos = 0;
+			ResultadoEnum resultadoDePartido = null;
+			
+			for (int i = 0; i < listaDePartido.size(); i++) {
+				
+				// verificacion entre ambos arrays 
+				
+				if (listaDePartido.get(i).getEquipo1().getNombre().equals(listaDePronos.get(i).getPartido().getEquipo1().getNombre()) && 
+					listaDePartido.get(i).getEquipo2().getNombre().equals(listaDePronos.get(i).getPartido().getEquipo2().getNombre())) {
+					
+					// obtencion de resultado del partido
+					
+					resultadoDePartido = listaDePartido.get(i).resultado(listaDePartido.get(i).getEquipo1());
+
+					// obtencion y sumatoria de puntos
+					
+					puntos += listaDePronos.get(i).puntos(resultadoDePartido);
+					
+				}
+					
+			}
+			
+			JOptionPane.showMessageDialog(null,"Se han obtenido "+ puntos +" puntos.");
 			
 			
 	}
