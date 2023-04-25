@@ -34,11 +34,11 @@ public class BasedeDatos {
     		catch (SQLException ex) {
     		}
     	
-    		 ResultSet rsR=null;
+    		 ResultSet rs=null;
     		 
     		  try { 
     			  
-    			  rsR = s.executeQuery("SELECT r.codResultado,r.codEquipo1,e1.descEquipo,r.golesEquipo1,r.golesEquipo2,e2.descEquipo,r.codEquipo2 "
+    			  rs = s.executeQuery("SELECT r.codResultado,r.codEquipo1,e1.descEquipo,r.golesEquipo1,r.golesEquipo2,e2.descEquipo,r.codEquipo2 "
     			  		+ "			   FROM projectofinal.resultado as r inner join  projectofinal.equipo as e1 on r.codEquipo1=e1.idEquipo "
     			  		+ "										   inner join projectofinal.equipo as e2  on (  r.codEquipo2=e2.idEquipo);");
     			  
@@ -63,18 +63,18 @@ public class BasedeDatos {
 				
     		try {
     			
-    			while(rsR.next() ){
+    			while(rs.next() ){
     									
     					partidoX = new Partido();
     	 				equipo1 = new Equipo();
     	 				equipo2 = new Equipo();
     	 				
-    	 				equipo1.setNombre(rsR.getString(3));
-    	 				equipo2.setNombre(rsR.getString(6));
+    	 				equipo1.setNombre(rs.getString(3));
+    	 				equipo2.setNombre(rs.getString(6));
     	 				partidoX.setEquipo1(equipo1);
     	 				partidoX.setEquipo2(equipo2);
-    	 				partidoX.setGolesEquipo1(rsR.getInt(4));
-    	 				partidoX.setGolesEquipo2(rsR.getInt(5));
+    	 				partidoX.setGolesEquipo1(rs.getInt(4));
+    	 				partidoX.setGolesEquipo2(rs.getInt(5));
     	    					
     	    			listaDePartido.add(partidoX);
 					
@@ -90,10 +90,10 @@ public class BasedeDatos {
     		}
     		
     		
-    		ResultSet rsP=null;
+    		rs=null;
     		
     		try {
-    			rsP = s.executeQuery("SELECT * FROM projectofinal.pronostico;");
+    			rs = s.executeQuery("SELECT * FROM projectofinal.pronostico;");
 			} catch (SQLException ex) {
   			  JOptionPane.showMessageDialog(null,"consulta de tabla --Pronostico-- fallida");
 			}
@@ -108,39 +108,34 @@ public class BasedeDatos {
 			
 			try {
 				
-				while (rsP.next()) {
+				while (rs.next()) {
 					pronosticoX = new Pronostico();	
     				partidoX = new Partido();
     				equipo1 = new Equipo();
-    				equipo1.setNombre(rsP.getString(3));
+    				equipo1.setNombre(rs.getString(3));
     				equipo2 = new Equipo();
-    				equipo2.setNombre(rsP.getString(7));
+    				equipo2.setNombre(rs.getString(7));
     				partidoX.setEquipo1(equipo1);
     				partidoX.setEquipo2(equipo2);	
     				equipoX = new Equipo();	
+    				 				
     				
-    	
-    				System.out.println(rsP.getString(4));
-    				System.out.println(rsP.getString(5));
-    				System.out.println(rsP.getString(6));
-    				
-    				
-    				if (rsP.getString(4) != null && "x".equalsIgnoreCase(rsP.getString(4)) ) {
-    				    equipoX.setNombre(rsP.getString(3));
+    				if (rs.getString(4) != null && "x".equalsIgnoreCase(rs.getString(4)) ) {
+    				    equipoX.setNombre(rs.getString(3));
     				    resultado = ResultadoEnum.ganador;
     				}
-    				if(rsP.getString(5) != null && "x".equalsIgnoreCase(rsP.getString(5)) ) {
+    				if(rs.getString(5) != null && "x".equalsIgnoreCase(rs.getString(5)) ) {
     				    resultado = ResultadoEnum.empate;
     				}
-    				if(rsP.getString(6) != null && "x".equalsIgnoreCase(rsP.getString(6)) ) {
-    				    equipoX.setNombre(rsP.getString(3));
+    				if(rs.getString(6) != null && "x".equalsIgnoreCase(rs.getString(6)) ) {
+    				    equipoX.setNombre(rs.getString(3));
     				    resultado = ResultadoEnum.perdedor;
     				}
     				
     				
 
     					
-    				pronosticoX.setNombre(rsP.getString(2));
+    				pronosticoX.setNombre(rs.getString(2));
     				pronosticoX.setPartido(partidoX);
     				pronosticoX.setEquipo(equipoX);
     				pronosticoX.setResultado(resultado);
@@ -159,12 +154,17 @@ public class BasedeDatos {
 			//listaDePronos
 			//listaDePartido
 			
+			
 			int puntos = 0;
 			ResultadoEnum resultadoDePartido = null;
+			String nombreParticipante = null;
+			
+			
 			
 			for (int i = 0; i < listaDePartido.size(); i++) {
 				
 				// verificacion entre ambos arrays 
+				nombreParticipante = listaDePronos.get(i).getNombre();
 				
 				if (listaDePartido.get(i).getEquipo1().getNombre().equals(listaDePronos.get(i).getPartido().getEquipo1().getNombre()) && 
 					listaDePartido.get(i).getEquipo2().getNombre().equals(listaDePronos.get(i).getPartido().getEquipo2().getNombre())) {
@@ -181,7 +181,7 @@ public class BasedeDatos {
 					
 			}
 			
-			JOptionPane.showMessageDialog(null,"Se han obtenido "+ puntos +" puntos.");
+			JOptionPane.showMessageDialog(null,nombreParticipante + " a obtenido "+ puntos +" puntos.");
 			
 			
 	}
